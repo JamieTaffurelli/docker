@@ -30,7 +30,7 @@ jobs:
           command: 'push'
           Dockerfile: 'azuredevops/dockerfile'
           tags: |
-            $(Build.SourceBranch)
+            $(Build.SourceBranchName)
             $(Build.BuildId)
             latest
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))

@@ -9,6 +9,7 @@ jobs:
     steps:
 
       - task: Docker@2
+        displayName: "Docker Build"
         inputs:
           containerRegistry: 'dockerhub'
           repository: 'azuredevops'
@@ -22,6 +23,7 @@ jobs:
           arguments: '--platform windows'
       
       - task: Docker@2
+        displayName: "Docker Push"
         inputs:
           containerRegistry: 'dockerhub'
           repository: 'azuredevops'
@@ -31,5 +33,4 @@ jobs:
             $(Build.SourceBranch)
             $(Build.BuildId)
             latest
-          arguments: '--platform windows'
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))

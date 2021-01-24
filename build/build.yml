@@ -12,10 +12,13 @@ jobs:
         inputs:
           containerRegistry: 'dockerhub'
           repository: 'azuredevops'
-          command: 'build'
+          command: 'buildAndPush'
           Dockerfile: 'azuredevops/Dockerfile'
           buildContext: 'azuredevops'
-          tags: 'latest'
+          tags: |
+            $(Build.SourceBranch)
+            $(Build.BuildId)
+            latest
           arguments: '--platform windows --output $(Build.ArtifactStagingDirectory)\azuredevops'
 
       - task: PublishPipelineArtifact@1

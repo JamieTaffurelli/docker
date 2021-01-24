@@ -1,0 +1,9 @@
+trigger:
+  - master
+
+stages:
+  - stage: Build
+    jobs:
+      - template: build.yml
+        parameters:
+          poolName: "windows-latest"

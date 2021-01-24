@@ -1,0 +1,19 @@
+parameters:
+  poolName: ""
+
+jobs:
+  - job:
+    timeoutInMinutes: 120
+    pool:
+      vmImage: ${{ parameters.poolName }}
+    steps:
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'dockerhub'
+          repository: 'azuredevops'
+          command: 'build'
+          Dockerfile: 'azuredevops/Dockerfile'
+          buildContext: 'azuredevops'
+          tags: 'latest'
+          arguments: '--platform windows'

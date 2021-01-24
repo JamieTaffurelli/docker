@@ -12,7 +12,7 @@ jobs:
         displayName: "Docker Build"
         inputs:
           containerRegistry: 'dockerhub'
-          repository: 'azuredevops'
+          repository: 'jamietaffurelli/azuredevops'
           command: 'build'
           Dockerfile: 'azuredevops/dockerfile'
           buildContext: 'azuredevops'
@@ -23,28 +23,14 @@ jobs:
           arguments: '--platform windows'
 
       - task: Docker@2
-        displayName: "Docker Login"
-        inputs:
-          containerRegistry: 'dockerhub'
-          command: 'login'
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
-      - task: Docker@2
         displayName: "Docker Push"
         inputs:
           containerRegistry: 'dockerhub'
-          repository: 'azuredevops'
+          repository: 'jamietaffurelli/azuredevops'
           command: 'push'
           Dockerfile: 'azuredevops/dockerfile'
           tags: |
             $(Build.SourceBranchName)
             $(Build.BuildId)
             latest
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
-      - task: Docker@2
-        displayName: "Docker Logout"
-        inputs:
-          containerRegistry: 'dockerhub'
-          command: 'logout'
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))

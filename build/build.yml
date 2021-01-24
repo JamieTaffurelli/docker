@@ -13,14 +13,23 @@ jobs:
           containerRegistry: 'dockerhub'
           repository: 'azuredevops'
           command: 'build'
-          Dockerfile: 'azuredevops/Dockerfile'
+          Dockerfile: 'azuredevops/dockerfile'
           buildContext: 'azuredevops'
-          tags: 'latest'
-          arguments: '--platform windows --output $(Build.ArtifactStagingDirectory)\azuredevops'
-
-      - task: PublishPipelineArtifact@1
-        displayName: "Publish Azure DevOps Image"
+          tags: |
+            $(Build.SourceBranchName)
+            $(Build.BuildId)
+            latest
+          arguments: '--platform windows'
+      
+      - task: Docker@2
         inputs:
-          targetPath: '$(Build.ArtifactStagingDirectory)\azuredevops'
-          artifact: "tests"
+          containerRegistry: 'dockerhub'
+          repository: 'azuredevops'
+          command: 'push'
+          Dockerfile: 'azuredevops/dockerfile'
+          tags: |
+            $(Build.SourceBranch)
+            $(Build.BuildId)
+            latest
+          arguments: '--platform windows'
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))

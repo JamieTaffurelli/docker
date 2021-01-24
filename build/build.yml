@@ -32,4 +32,4 @@ jobs:
             $(Build.BuildId)
             latest
           arguments: '--platform windows'
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))

@@ -21,7 +21,14 @@ jobs:
             $(Build.BuildId)
             latest
           arguments: '--platform windows'
-      
+
+      - task: Docker@2
+        displayName: "Docker Login"
+        inputs:
+          containerRegistry: 'dockerhub'
+          command: 'login'
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
       - task: Docker@2
         displayName: "Docker Push"
         inputs:
@@ -33,4 +40,11 @@ jobs:
             $(Build.SourceBranchName)
             $(Build.BuildId)
             latest
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+      - task: Docker@2
+        displayName: "Docker Logout"
+        inputs:
+          containerRegistry: 'dockerhub'
+          command: 'logout'
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
